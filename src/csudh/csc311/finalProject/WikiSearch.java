@@ -60,11 +60,15 @@ public class WikiSearch {
 	 * @return New WikiSearch object.
 	 */
 	public WikiSearch or(WikiSearch that) {
+		//creates a hashmap r that will map the relevance of a term on the Wikipedia website
 		Map<String, Integer> r = new HashMap<String, Integer>(map);
 		for(String term: that.map.keySet()) {
+			// relevance score is based on the TF-IDF framework for term relevance
 			int relevanceScore = totalRelevance(this.getRelevance(term),that.getRelevance(term));
+			//adds the term and its relevance to the hashmap
 			r.put(term, relevanceScore);
 		}
+		//returns the hashmap
 		return new WikiSearch(r);
 	}
 
@@ -74,14 +78,22 @@ public class WikiSearch {
 	 * @param that
 	 * @return New WikiSearch object.
 	 */
+
+	//checks for the intersection of two searches 
 	public WikiSearch and(WikiSearch that) {
+		//Creates a hashMap intersection 
 		Map<String, Integer> intersection = new HashMap<String, Integer>();
+		//for each term in the hashmap
 		for (String term: map.keySet()) {
+			//checks if the map contains the term
 			if (that.map.containsKey(term)) {
+				//creates integer relevance that takes the total relevance  of the two identical terms
 				int relevance = totalRelevance(this.map.get(term), that.map.get(term));
+				//adds the term and its relevance to the intersection hasmap
 				intersection.put(term, relevance);
 			}
 		}
+		//returns the intersection search results
 		return new WikiSearch(intersection);
 	}
 
@@ -92,10 +104,14 @@ public class WikiSearch {
 	 * @return New WikiSearch object.
 	 */
 	public WikiSearch minus(WikiSearch that) {
+		//Creates a new hashmap difference
 		Map<String, Integer> difference = new HashMap<String, Integer>(map);
+		//for each term in the hashmap
 		for (String term: that.map.keySet()) {
+			//removes the term
 			difference.remove(term);
 		}
+		//returns the hashmap without the term
 		return new WikiSearch(difference);
 	}
 
@@ -106,6 +122,8 @@ public class WikiSearch {
 	 * @param rel2: relevance score for the second search
 	 * @return
 	 */
+
+	 
 	protected int totalRelevance(Integer rel1, Integer rel2) {
 		// simple starting place: relevance is the sum of the term frequencies.
 		return rel1 + rel2;
