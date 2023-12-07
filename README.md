@@ -1,7 +1,7 @@
 
-#The following code was written by Yasamean Zaidi-Dozandeh
+The following code was written by Yasamean Zaidi-Dozandeh
 
-##Process
+Process
 Firstly, the base source files for Index, JedisIndex, JedisMaker, TermCounter, WikiFetcher, WikiNodeIterable, WikiSearch,
 and WikiSearchTest were taken from Think Data Structures github repository for Excercise 13 in Chapter 16. 
 
