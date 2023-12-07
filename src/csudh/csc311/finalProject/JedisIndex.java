@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.HashMap;
 //import java.util.ArrayList;
 //import java.util.HashMap;
 import java.util.HashSet;
@@ -77,8 +78,7 @@ public class JedisIndex {
 	 * @return Set of URLs.
 	 */
 	public Set<String> getURLs(String term) {
-        // FILL THIS IN!
-		return null;
+        return jedis.smembers(urlSetKey(term));
 	}
 
     /**
@@ -88,8 +88,12 @@ public class JedisIndex {
 	 * @return Map from URL to count.
 	 */
 	public Map<String, Integer> getCounts(String term) {
-        // FILL THIS IN!
-		return null;
+        Set<String> links = getURLs(term);
+		Map<String, Integer>  counter = new HashMap<>();
+		for(String link: links) {
+			counter.put(link, getCount(link, term));
+		}
+		return counter;
 	}
 
     /**
@@ -100,8 +104,8 @@ public class JedisIndex {
 	 * @return
 	 */
 	public Integer getCount(String url, String term) {
-        // FILL THIS IN!
-		return null;
+        String count = jedis.hget(termCounterKey(url), term);
+	   return count != null ? Integer.parseInt(count) : 0;
 	}
 
 	/**
