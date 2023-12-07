@@ -54,6 +54,12 @@
         </java>
     </target>
 
+     <target name="JedisMaker">
+        <java classname="csudh.csc311.finalProject.JedisMaker" failonerror="true" fork="yes">
+            <classpath refid="JavaCS.classpath"/>
+        </java>
+    </target>
+
     <target name="WikiSearchTest">
         <mkdir dir="${junit.output.dir}"/>
         <junit fork="yes" printsummary="withOutAndErr">
@@ -62,13 +68,7 @@
             <classpath refid="JavaCS.classpath"/>
         </junit>
     </target>
-
-    <target name="JedisMaker">
-        <java classname="csudh.csc311.finalProject.JedisMaker" failonerror="true" fork="yes">
-            <classpath refid="JavaCS.classpath"/>
-        </java>
-    </target>
-
+    
      <target name="TermCounter">
         <java classname="csudh.csc311.finalProject.TermCounter" failonerror="true" fork="yes">
             <classpath refid="JavaCS.classpath"/>
