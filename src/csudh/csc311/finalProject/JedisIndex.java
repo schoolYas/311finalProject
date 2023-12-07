@@ -4,8 +4,8 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
-import java.util.ArrayList;
-import java.util.HashMap;
+//import java.util.ArrayList;
+//import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
@@ -111,8 +111,29 @@ public class JedisIndex {
 	 * @param paragraphs  Collection of elements that should be indexed.
 	 */
 	public void indexPage(String url, Elements paragraphs) {
-		// TODO: FILL THIS IN!
+		TermCounter termcount = new TermCounter(url);
+		//count the number of terms in the paragraph
+		termcount.processElements(paragraphs);
+		//push the terms to redis
+		pushTerm(termcount);
 	}
+	
+	public List<Object> pushTerm(TermCounter termcount){
+		Transaction trans = jedis.multi();
+		String url = termcount.getLabel();
+		String hashName = termCounterKey(url);
+
+		trans.del(hashName);
+
+		for(String term: termcount.keySet()){
+			Integer count = termcount.get(term);
+			trans.hset(hashName, term, count.toString());
+			trans.sadd(urlSetKey(term),url);
+		}
+		List<Object> lis = trans.exec();
+		return lis;
+	}
+
 
 	/**
 	 * Prints the contents of the index.

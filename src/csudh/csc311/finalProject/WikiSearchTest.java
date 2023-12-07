@@ -11,9 +11,7 @@ import java.util.Map.Entry;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.Assert; 
-
-import src.csudh.csc311.finalProject.WikiSearch;
+import src.csudh.csc311.finalProject.*;
 
 /**
  * 
