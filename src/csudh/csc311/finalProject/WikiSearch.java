@@ -9,7 +9,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import redis.clients.jedis.Jedis;
-import redis.clients.jedis.Transaction;
 
 
 /**
@@ -61,8 +60,12 @@ public class WikiSearch {
 	 * @return New WikiSearch object.
 	 */
 	public WikiSearch or(WikiSearch that) {
-		// TODO: FILL THIS IN!
-		return null;
+		Map<String, Integer> r = new HashMap<String, Integer>(map);
+		for(String term: that.map.keySet()) {
+			int relevanceScore = totalRelevance(this.getRelevance(term),that.getRelevance(term));
+			r.put(term, relevanceScore);
+		}
+		return new WikiSearch(r);
 	}
 
 	/**
@@ -72,8 +75,14 @@ public class WikiSearch {
 	 * @return New WikiSearch object.
 	 */
 	public WikiSearch and(WikiSearch that) {
-		// TODO: FILL THIS IN!
-		return null;
+		Map<String, Integer> intersection = new HashMap<String, Integer>();
+		for (String term: map.keySet()) {
+			if (that.map.containsKey(term)) {
+				int relevance = totalRelevance(this.map.get(term), that.map.get(term));
+				intersection.put(term, relevance);
+			}
+		}
+		return new WikiSearch(intersection);
 	}
 
 	/**
@@ -83,8 +92,11 @@ public class WikiSearch {
 	 * @return New WikiSearch object.
 	 */
 	public WikiSearch minus(WikiSearch that) {
-		// TODO: FILL THIS IN!
-		return null;
+		Map<String, Integer> difference = new HashMap<String, Integer>(map);
+		for (String term: that.map.keySet()) {
+			difference.remove(term);
+		}
+		return new WikiSearch(difference);
 	}
 
 	/**
@@ -105,8 +117,22 @@ public class WikiSearch {
 	 * @return List of entries with URL and relevance.
 	 */
 	public List<Entry<String, Integer>> sort() {
-		// TODO: FILL THIS IN!
-		return null;
+		List<Entry<String, Integer>> entries = 
+				new LinkedList<Entry<String, Integer>>(map.entrySet());
+		
+		// Comparator object is created to help sort
+		Comparator<Entry<String, Integer>> comparator = new Comparator<Entry<String, Integer>>() {
+            @Override
+			//comparator requires compare method to be implemented
+            public int compare(Entry<String, Integer> e1, Entry<String, Integer> e2) {
+				//compares the two values 
+                return e1.getValue().compareTo(e2.getValue());
+            }
+        };
+        
+        // sort the entries and then return them
+		Collections.sort(entries, comparator);
+		return entries;
 	}
 
 
