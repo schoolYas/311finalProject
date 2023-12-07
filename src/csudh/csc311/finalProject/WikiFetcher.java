@@ -1,10 +1,8 @@
 package src.csudh.csc311.finalProject;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;

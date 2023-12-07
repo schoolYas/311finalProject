@@ -1,48 +1,40 @@
 package src.csudh.csc311.finalProject;
-
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.HashSet;
-
 import org.jsoup.select.Elements;
 
 /**
  * Encapsulates a map from search term to set of TermCounter.
- *
- * 
- *
  */
 public class Index {
 
     private Map<String, Set<TermCounter>> index = new HashMap<String, Set<TermCounter>>();
-
     /**
      * Adds a TermCounter to the set associated with `term`.
-     *
      * @param term
      * @param tc
      */
     public void add(String term, TermCounter tc) {
         Set<TermCounter> set = get(term);
-
-        // if we're seeing a term for the first time, make a new Set
+        // If the term is a new one, it will make a new Set
         if (set == null) {
             set = new HashSet<TermCounter>();
             index.put(term, set);
         }
-        // otherwise we can modify an existing Set
+        // Allows us to modify an existing Set
         set.add(tc);
     }
 
     /**
      * Looks up a search term and returns a set of TermCounters.
-     *
      * @param term
      * @return
      */
     public Set<TermCounter> get(String term) {
+		//Returns the set
         return index.get(term);
     }
 
@@ -50,11 +42,11 @@ public class Index {
 	 * Prints the contents of the index.
 	 */
 	public void printIndex() {
-		// loop through the search terms
+		// Loops through the search terms
 		for (String term: keySet()) {
 			System.out.println(term);
 			
-			// for each term, print the pages where it appears
+			// For each term, print the pages where it appears
 			Set<TermCounter> tcs = get(term);
 			for (TermCounter tc: tcs) {
 				Integer count = tc.get(term);

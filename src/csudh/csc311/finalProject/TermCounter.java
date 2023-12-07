@@ -1,20 +1,14 @@
 package src.csudh.csc311.finalProject;
-
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-
 import org.jsoup.nodes.Node;
 import org.jsoup.nodes.TextNode;
 import org.jsoup.select.Elements;
 
-
 /**
  * Encapsulates a map from search term to frequency (count).
- *
- * 
- *
  */
 public class TermCounter {
 
@@ -25,7 +19,7 @@ public class TermCounter {
 		this.label = label;
 		this.map = new HashMap<String, Integer>();
 	}
-
+	
 	public String getLabel() {
 		return label;
 	}
@@ -45,10 +39,10 @@ public class TermCounter {
 
 	/**
 	 * Takes a collection of Elements and counts their words.
-	 *
 	 * @param paragraphs
 	 */
 	public void processElements(Elements paragraphs) {
+		//Checks each word in the paragraph 
 		for (Node node: paragraphs) {
 			processTree(node);
 		}
@@ -56,14 +50,13 @@ public class TermCounter {
 
 	/**
 	 * Finds TextNodes in a DOM tree and counts their words.
-	 *
 	 * @param root
 	 */
 	public void processTree(Node root) {
-		// NOTE: we could use select to find the TextNodes, but since
-		// we already have a tree iterator, let's use it.
+		//Checks each node in the DOM TRee
 		for (Node node: new WikiNodeIterable(root)) {
 			if (node instanceof TextNode) {
+				//Counts the words
 				processText(((TextNode) node).text());
 			}
 		}
@@ -71,11 +64,10 @@ public class TermCounter {
 
 	/**
 	 * Splits `text` into words and counts them.
-	 *
 	 * @param text  The text to process.
 	 */
 	public void processText(String text) {
-		// replace punctuation with spaces, convert to lower case, and split on whitespace
+		// Replaces punctuation with spaces, convert to lower case, and split on whitespace
 		String[] array = text.replaceAll("\\pP", " ").
 				              toLowerCase().
 				              split("\\s+");
@@ -88,7 +80,6 @@ public class TermCounter {
 
 	/**
 	 * Increments the counter associated with `term`.
-	 *
 	 * @param term
 	 */
 	public void incrementTermCount(String term) {

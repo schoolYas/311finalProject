@@ -7,7 +7,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-
 import redis.clients.jedis.Jedis;
 
 
@@ -17,7 +16,7 @@ import redis.clients.jedis.Jedis;
  */
 public class WikiSearch {
 
-	// map from URLs that contain the term(s) to relevance score
+	// Map from URLs that contain the term(s) to relevance score
 	private Map<String, Integer> map;
 
 	/**
@@ -60,15 +59,15 @@ public class WikiSearch {
 	 * @return New WikiSearch object.
 	 */
 	public WikiSearch or(WikiSearch that) {
-		//creates a hashmap r that will map the relevance of a term on the Wikipedia website
+		//Creates a hashmap that will map the relevance of a term on the Wikipedia website
 		Map<String, Integer> r = new HashMap<String, Integer>(map);
 		for(String term: that.map.keySet()) {
-			// relevance score is based on the TF-IDF framework for term relevance
+			// Relevance score is based on the TF-IDF framework for term relevance
 			int relevanceScore = totalRelevance(this.getRelevance(term),that.getRelevance(term));
-			//adds the term and its relevance to the hashmap
+			//Adds the term and its relevance to the hashmap
 			r.put(term, relevanceScore);
 		}
-		//returns the hashmap
+		//Returns the hashmap
 		return new WikiSearch(r);
 	}
 
@@ -123,7 +122,7 @@ public class WikiSearch {
 	 * @return
 	 */
 
-	 
+
 	protected int totalRelevance(Integer rel1, Integer rel2) {
 		// simple starting place: relevance is the sum of the term frequencies.
 		return rel1 + rel2;

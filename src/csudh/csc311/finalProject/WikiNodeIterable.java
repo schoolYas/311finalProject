@@ -1,5 +1,4 @@
 package src.csudh.csc311.finalProject;
-
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -7,7 +6,6 @@ import java.util.Deque;
 import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
-
 import org.jsoup.nodes.Node;
 
 

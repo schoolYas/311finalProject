@@ -1,7 +1,7 @@
 package src.csudh.csc311.finalProject;
 import java.io.IOException;
-
 import redis.clients.jedis.Jedis;
+
 public class JedisMaker {
 
 	/**
@@ -11,17 +11,15 @@ public class JedisMaker {
 	 * @throws IOException
 	 */
 	public static Jedis make() {
-		// connect to the server
-        // More info: https://docs.redis.com/latest/rc/rc-quickstart/#using-rediscli
-
-		//Endpont: redis-17771.c60.us-west-1-2.ec2.cloud.redislabs.com:17771
+		// Connects to the Server
 		Jedis jedis = new Jedis("redis-15253.c280.us-central1-2.gce.cloud.redislabs.com",15253);
+		//Authorizes connection with password
 		jedis.auth("l5nhsVghzfdX9AKKeCZDNeMpOj8uPgIu");
-
 		return jedis;
 	}
 
 	/**
+	 * Creates a test set to check that database populates
 	 * @param args
 	 * @throws IOException
 	 * 
