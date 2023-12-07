@@ -24,12 +24,10 @@ public class WikiFetcher {
 	public Elements fetchWikipedia(String url) throws IOException {
 		sleepIfNeeded();
 
-		// download and parse the document
-		Connection conn = Jsoup.connect(url);
+		Connection conn = Jsoup.connect(url); // Download and parse the document
 		Document doc = conn.get();
 
-		// select the content text and pull out the paragraphs.
-		Element content = doc.getElementById("mw-content-text");
+		Element content = doc.getElementById("mw-content-text"); // Select the content text and pull out the paragraphs.
 
 		Elements paras = content.select("p");
 		return paras;
@@ -45,16 +43,13 @@ public class WikiFetcher {
 	public Elements readWikipedia(String url) throws IOException {
 		URL realURL = new URL(url);
 
-		// assemble the file name
-		String slash = File.separator;
+		String slash = File.separator; // Assemble the file name
 		String filename = "resources" + slash + realURL.getHost() + realURL.getPath();
 
-		// read the file
-		InputStream stream = WikiFetcher.class.getClassLoader().getResourceAsStream(filename);
+		InputStream stream = WikiFetcher.class.getClassLoader().getResourceAsStream(filename); // Read the file
 		Document doc = Jsoup.parse(stream, "UTF-8", filename);
 
-		// parse the contents of the file
-		Element content = doc.getElementById("mw-content-text");
+		Element content = doc.getElementById("mw-content-text"); // Parse the contents of the file
 		Elements paras = content.select("p");
 		return paras;
 	}
@@ -68,7 +63,6 @@ public class WikiFetcher {
 			long nextRequestTime = lastRequestTime + minInterval;
 			if (currentTime < nextRequestTime) {
 				try {
-					//System.out.println("Sleeping until " + nextRequestTime);
 					Thread.sleep(nextRequestTime - currentTime);
 				} catch (InterruptedException e) {
 					System.err.println("Warning: sleep interrupted in fetchWikipedia.");

@@ -11,10 +11,8 @@ public class JedisMaker {
 	 * @throws IOException
 	 */
 	public static Jedis make() {
-		// Connects to the Server
-		Jedis jedis = new Jedis("redis-15253.c280.us-central1-2.gce.cloud.redislabs.com",15253);
-		//Authorizes connection with password
-		jedis.auth("l5nhsVghzfdX9AKKeCZDNeMpOj8uPgIu");
+		Jedis jedis = new Jedis("redis-15253.c280.us-central1-2.gce.cloud.redislabs.com",15253); // Connects to the Server
+		jedis.auth("l5nhsVghzfdX9AKKeCZDNeMpOj8uPgIu"); //Authorizes connection with password
 		return jedis;
 	}
 

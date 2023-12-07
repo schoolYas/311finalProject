@@ -16,7 +16,6 @@ import redis.clients.jedis.Jedis;
  */
 public class WikiSearch {
 
-	// Map from URLs that contain the term(s) to relevance score
 	private Map<String, Integer> map;
 
 	/**
@@ -24,7 +23,6 @@ public class WikiSearch {
 	 *
 	 * @param map
 	 */
-	//A WikiSearch object contains a map from URLs to their relevance score.
 	public WikiSearch(Map<String, Integer> map) {
 		this.map = map;
 	}
@@ -33,17 +31,17 @@ public class WikiSearch {
 	 * Looks up the relevance of a given URL.
 	 *
 	 * @param url
-	 * @return
+	 * @return the relevance 
 	 */
 	public Integer getRelevance(String url) {
-		Integer relevance = map.get(url);
-		return relevance==null ? 0: relevance;
+		Integer relevance = map.get(url); 
+		return relevance==null ? 0: relevance; //ternary ifelse returning the relevance 
 	}
 
 	/**
 	 * Prints the contents in order of term frequency.
 	 *
-	 * @param
+	 * 
 	 */
 	private  void print() {
 		List<Entry<String, Integer>> entries = sort();
@@ -59,16 +57,13 @@ public class WikiSearch {
 	 * @return New WikiSearch object.
 	 */
 	public WikiSearch or(WikiSearch that) {
-		//Creates a hashmap that will map the relevance of a term on the Wikipedia website
-		Map<String, Integer> r = new HashMap<String, Integer>(map);
+		
+		Map<String, Integer> r = new HashMap<String, Integer>(map); 
 		for(String term: that.map.keySet()) {
-			// Relevance score is based on the TF-IDF framework for term relevance
-			int relevanceScore = totalRelevance(this.getRelevance(term),that.getRelevance(term));
-			//Adds the term and its relevance to the hashmap
-			r.put(term, relevanceScore);
+			int relevanceScore = totalRelevance(this.getRelevance(term),that.getRelevance(term)); // Computes combined relevance
+			r.put(term, relevanceScore); //Adds the term and its relevance to the hashmap
 		}
-		//Returns the hashmap
-		return new WikiSearch(r);
+		return new WikiSearch(r); // Returns new WikiSearch object
 	}
 
 	/**
@@ -78,22 +73,15 @@ public class WikiSearch {
 	 * @return New WikiSearch object.
 	 */
 
-	//checks for the intersection of two searches 
 	public WikiSearch and(WikiSearch that) {
-		//Creates a hashMap intersection 
 		Map<String, Integer> intersection = new HashMap<String, Integer>();
-		//for each term in the hashmap
 		for (String term: map.keySet()) {
-			//checks if the map contains the term
-			if (that.map.containsKey(term)) {
-				//creates integer relevance that takes the total relevance  of the two identical terms
-				int relevance = totalRelevance(this.map.get(term), that.map.get(term));
-				//adds the term and its relevance to the intersection hasmap
-				intersection.put(term, relevance);
+			if (that.map.containsKey(term)) { //Checks if the map contains the term
+				int relevance = totalRelevance(this.map.get(term), that.map.get(term)); // Computes combined relevance
+				intersection.put(term, relevance); 
 			}
 		}
-		//returns the intersection search results
-		return new WikiSearch(intersection);
+		return new WikiSearch(intersection);// Returns new WikiSearch object
 	}
 
 	/**
@@ -103,15 +91,11 @@ public class WikiSearch {
 	 * @return New WikiSearch object.
 	 */
 	public WikiSearch minus(WikiSearch that) {
-		//Creates a new hashmap difference
 		Map<String, Integer> difference = new HashMap<String, Integer>(map);
-		//for each term in the hashmap
-		for (String term: that.map.keySet()) {
-			//removes the term
-			difference.remove(term);
+		for (String term: that.map.keySet()) { //Checks each term in HashMap
+			difference.remove(term); //Removes the term
 		}
-		//returns the hashmap without the term
-		return new WikiSearch(difference);
+		return new WikiSearch(difference);// Returns WikiSearch object
 	}
 
 	/**
@@ -124,8 +108,7 @@ public class WikiSearch {
 
 
 	protected int totalRelevance(Integer rel1, Integer rel2) {
-		// simple starting place: relevance is the sum of the term frequencies.
-		return rel1 + rel2;
+		return rel1 + rel2; // returns sum of term frequencies
 	}
 
 	/**
@@ -137,18 +120,14 @@ public class WikiSearch {
 		List<Entry<String, Integer>> entries = 
 				new LinkedList<Entry<String, Integer>>(map.entrySet());
 		
-		// Comparator object is created to help sort
-		Comparator<Entry<String, Integer>> comparator = new Comparator<Entry<String, Integer>>() {
+		Comparator<Entry<String, Integer>> comparator = new Comparator<Entry<String, Integer>>() { //Sorts using Comparator 
             @Override
-			//comparator requires compare method to be implemented
             public int compare(Entry<String, Integer> e1, Entry<String, Integer> e2) {
-				//compares the two values 
-                return e1.getValue().compareTo(e2.getValue());
+                return e1.getValue().compareTo(e2.getValue()); 
             }
         };
         
-        // sort the entries and then return them
-		Collections.sort(entries, comparator);
+		Collections.sort(entries, comparator); //Sorts the entries and then returns them
 		return entries;
 	}
 
@@ -166,27 +145,28 @@ public class WikiSearch {
 		return new WikiSearch(map);
 	}
 
+	/**
+	 * 
+	 * @param args
+	 * @throws IOException
+	 */
 	public static void main(String[] args) throws IOException {
 
-		// make a JedisIndex
 		Jedis jedis = JedisMaker.make();
-		JedisIndex index = new JedisIndex(jedis);
+		JedisIndex index = new JedisIndex(jedis); // makes a JedisIndex object
 
-		// search for the first term
-		String term1 = "java";
-		System.out.println("Query: " + term1);
+		String term1 = "java"; 
+		System.out.println("Query: " + term1); // Search for the first term
 		WikiSearch search1 = search(term1, index);
 		search1.print();
 
-		// search for the second term
 		String term2 = "programming";
-		System.out.println("Query: " + term2);
+		System.out.println("Query: " + term2); // Search for the second term
 		WikiSearch search2 = search(term2, index);
 		search2.print();
 
-		// compute the intersection of the searches
 		System.out.println("Query: " + term1 + " AND " + term2);
-		WikiSearch intersection = search1.and(search2);
+		WikiSearch intersection = search1.and(search2); // Compute the intersection of the searches
 		intersection.print();
 	}
 }

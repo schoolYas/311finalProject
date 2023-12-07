@@ -15,6 +15,10 @@ public class TermCounter {
 	private Map<String, Integer> map;
 	private String label;
 
+	/**
+	 * 
+	 * @param label
+	 */
 	public TermCounter(String label) {
 		this.label = label;
 		this.map = new HashMap<String, Integer>();
@@ -67,8 +71,7 @@ public class TermCounter {
 	 * @param text  The text to process.
 	 */
 	public void processText(String text) {
-		// Replaces punctuation with spaces, convert to lower case, and split on whitespace
-		String[] array = text.replaceAll("\\pP", " ").
+		String[] array = text.replaceAll("\\pP", " "). // Replaces punctuation with spaces, convert to lower case, and split on whitespace
 				              toLowerCase().
 				              split("\\s+");
 		
@@ -83,7 +86,6 @@ public class TermCounter {
 	 * @param term
 	 */
 	public void incrementTermCount(String term) {
-		// System.out.println(term);
 		put(term, get(term) + 1);
 	}
 

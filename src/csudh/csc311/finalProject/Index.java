@@ -18,14 +18,12 @@ public class Index {
      * @param tc
      */
     public void add(String term, TermCounter tc) {
-        Set<TermCounter> set = get(term);
-        // If the term is a new one, it will make a new Set
+        Set<TermCounter> set = get(term); // If the term is a new one, it will make a new Set
         if (set == null) {
             set = new HashSet<TermCounter>();
             index.put(term, set);
         }
-        // Allows us to modify an existing Set
-        set.add(tc);
+        set.add(tc); // Allows us to modify an existing Set
     }
 
     /**
@@ -34,20 +32,17 @@ public class Index {
      * @return
      */
     public Set<TermCounter> get(String term) {
-		//Returns the set
-        return index.get(term);
+        return index.get(term); //Returns the set
     }
 
 	/**
 	 * Prints the contents of the index.
 	 */
 	public void printIndex() {
-		// Loops through the search terms
-		for (String term: keySet()) {
+		for (String term: keySet()) { // Loops through the search terms
 			System.out.println(term);
 			
-			// For each term, print the pages where it appears
-			Set<TermCounter> tcs = get(term);
+			Set<TermCounter> tcs = get(term); // For each term, print the pages where it appears
 			for (TermCounter tc: tcs) {
 				Integer count = tc.get(term);
 				System.out.println("    " + tc.getLabel() + " " + count);

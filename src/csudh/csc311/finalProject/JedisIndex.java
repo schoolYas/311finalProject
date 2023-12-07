@@ -116,7 +116,11 @@ public class JedisIndex {
 		//push the terms to redis
 		pushTerm(termcount);
 	}
-	
+	/**
+	 * 
+	 * @param termcount
+	 * @return list 
+	 */
 	public List<Object> pushTerm(TermCounter termcount){
 		Transaction trans = jedis.multi();
 		String url = termcount.getLabel();

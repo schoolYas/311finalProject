@@ -11,9 +11,6 @@ import org.jsoup.nodes.Node;
 
 /**
  * Performs a depth-first traversal of a jsoup Node.
- *
- * 
- *
  */
 public class WikiNodeIterable implements Iterable<Node> {
 
@@ -36,13 +33,13 @@ public class WikiNodeIterable implements Iterable<Node> {
 	/**
 	 * Inner class that implements the Iterator.
 	 *
-	 * @author downey
+	 * @author Yasamean Zaidi-Dozandeh
 	 *
 	 */
 	private class WikiNodeIterator implements Iterator<Node> {
 
-		// this stack keeps track of the Nodes waiting to be visited
-		Deque<Node> stack;
+		
+		Deque<Node> stack; // the Stack keeps track of the Nodes waiting to be visited
 
 		/**
 		 * Initializes the Iterator with the root Node on the stack.
@@ -56,22 +53,18 @@ public class WikiNodeIterable implements Iterable<Node> {
 
 		@Override
 		public boolean hasNext() {
-			return !stack.isEmpty();
+			return !stack.isEmpty(); 
 		}
 
 		@Override
 		public Node next() {
-			// if the stack is empty, we're done
-			if (stack.isEmpty()) {
+			if (stack.isEmpty()) { // If the stack is empty, we're done
 				throw new NoSuchElementException();
 			}
 
-			// otherwise pop the next Node off the stack
-			Node node = stack.pop();
-			//System.out.println(node);
+			Node node = stack.pop(); // Otherwise pop the next Node off the stack
 
-			// push the children onto the stack in reverse order
-			List<Node> nodes = new ArrayList<Node>(node.childNodes());
+			List<Node> nodes = new ArrayList<Node>(node.childNodes()); // Push the children onto the stack in reverse order
 			Collections.reverse(nodes);
 			for (Node child: nodes) {
 				stack.push(child);
